@@ -35,7 +35,7 @@ fn main() {
         }
         let mut fd3 = unsafe { File::from_raw_fd(3) };
         match serde_json::to_string(&actionMain(payload)){
-            Ok(result) => { write!(&mut fd3, "{}\n", result);}
+            Ok(result) => { write!(&mut fd3, "{}\n", result).expect("Error writting on fd3");}
             Err(err) => {  eprintln!("Error parsing resul value json: {}", err);}
         }
         drop(fd3);
