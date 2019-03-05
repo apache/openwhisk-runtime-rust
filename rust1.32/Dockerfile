@@ -19,7 +19,8 @@ FROM rust:1.32
 COPY --from=builder /bin/proxy /bin/proxy
 RUN mkdir -p /action 
 ADD compile /bin/compile
-ADD compile.launcher.rs /bin/compile.launcher.rs
+ADD src /usr/src
+RUN cd /usr/src ; cargo build 
 ENV OW_COMPILER=/bin/compile
 WORKDIR /action
 ENTRYPOINT ["/bin/proxy"]

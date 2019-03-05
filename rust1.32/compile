@@ -21,7 +21,8 @@
 from __future__ import print_function
 import os, sys, codecs, subprocess
 from os.path import abspath, exists, dirname
-import tempfile
+import time
+import shutil
 
 ## utils 
 # write a file creating intermediate directories
@@ -47,59 +48,39 @@ version = "0.1.0"
 serde_json = "1.0"
 """
 
-cargo_actionloop = """[package]
-name = "action_loop"
-version = "0.1.0"
-authors = ["Roberto Diaz <roberto@theagilemonkeys.com>"]
-
-[dependencies]
-serde_json = "1.0"
-libc = "0.2.49"
-actions = { path = "../actions" }
-"""
-
-cargo_workspace = """
-[workspace]
-
-members = [
-"action_loop",
-"actions",
-]
-"""
-
-def build():
+def build(tgt_dir):
     pass
 
-def sources(main, src_dir, tgt_dir, launcher):
-    src_file = abspath("%s/exec" % src_dir)
-       
+def sources(main, src_dir):
+    # move away the action dir and replace with the new
+    tmpname = str(int(time.time()))
+    shutil.move("/usr/src/actions", "/usr/src/src%s" % tmpname)
+    shutil.move(src_dir, "/usr/src/actions")
+
     # move exec in the right place
+    src_file = "/usr/src/actions/exec"
     if exists(src_file):
-        os.makedirs(src_dir+"/src", mode=0o755, exist_ok=True)
-        copy_replace(src_file, src_dir+"/src/exec__.rs")
+        os.makedirs("/usr/src/actions/src", mode=0o755, exist_ok=True)
+        copy_replace(src_file, "/usr/src/actions/src/lib.rs")
     
     # add a cargo.toml if needed
-    cargo_action_file = src_dir+"/Cargo.toml"
+    cargo_action_file = "/usr/src/actions/Cargo.toml"
     if not exists(cargo_action_file):
         write_file(cargo_action_file, cargo_action)
 
     # write the boilerplate in a temp dir
-    os.makedirs("/tmp/src", mode=0o755, exist_ok=True)
-    tmp_dir = tempfile.mkdtemp(prefix='/tmp/src/')
-    copy_replace(launcher, tmp_dir+"/action_loop/src/main.rs",
+    launcher = "/usr/src/action_loop/tmp%s" % tmpname
+    shutil.move("/usr/src/action_loop/src/main.rs", launcher)
+    copy_replace(launcher, "/usr/src/action_loop/src/main.rs",
           "use actions::main as actionMain;",
           "use actions::%s as actionMain;" % main )
-    write_file(tmp_dir+"/action_loop/Cargo.toml", cargo_actionloop)
-    write_file(tmp_dir+"/Cargo.toml", cargo_workspace)
-    os.rename(src_dir, tmp_dir+"/actions")
-    return tmp_dir
 
 if __name__ == '__main__':
     if len(sys.argv) < 4:
         sys.stdout.write("usage: <main-function> <source-dir> <target-dir>\n")
         sys.stdout.flush()
         sys.exit(1)
-    dir = sources(sys.argv[1], abspath(sys.argv[2]), abspath(sys.argv[3]), abspath(sys.argv[0]+".launcher.rs"))
-    print(dir)
+    sources(sys.argv[1], abspath(sys.argv[2]))
+    build(abspath(sys.argv[3]))
     sys.stdout.flush()
     sys.stderr.flush()
