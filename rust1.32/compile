@@ -49,7 +49,31 @@ serde_json = "1.0"
 """
 
 def build(tgt_dir):
-    pass
+     # support RELEASE
+     cmd = ["cargo", "build"]
+     bin_dir = "debug"
+     if "RELEASE" in os.environ:
+         cmd += "--release"
+         bin_dir = "release"
+     env = {
+         "CARGO_HOME": "/usr/local/cargo",
+         "PATH": "/usr/local/cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+         "RUSTUP_HOME": "/usr/local/rustup"
+     }
+     p = subprocess.Popen(cmd,
+           stdout=subprocess.PIPE,
+           stderr=subprocess.PIPE,
+           cwd="/usr/src", env=env)
+     (o, e) = p.communicate()
+     if isinstance(o, bytes): o = o.decode('utf-8')
+     if isinstance(e, bytes): e = e.decode('utf-8')
+     if p.returncode != 0:
+        sys.stdout.write(o)
+        sys.stdout.write(e)
+     else:
+       shutil.move(
+             "/usr/src/target/%s/action_loop" % bin_dir, 
+             "%s/exec" % tgt_dir)
 
 def sources(main, src_dir):
     # move away the action dir and replace with the new
