@@ -1,10 +1,28 @@
 extern crate serde_json;
 
-use std::collections::HashMap;
-use serde_json::Value;
+use serde_derive::{Deserialize, Serialize};
+use serde_json::{Error, Value};
 
-
-pub fn main(mut input_data: HashMap<String, Value>) -> HashMap<String, Value> {
-    input_data.insert("added_key".to_string(),Value::String("test".to_string()));
-    input_data
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+struct Input {
+    #[serde(default = "stranger")]
+    name: String,
 }
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+struct Output {
+    greeting: String,
+}
+
+fn stranger() -> String {
+    "stranger".to_string()
+}
+
+pub fn main(args: Value) -> Result<Value, Error> {
+    let input: Input = serde_json::from_value(args)?;
+    let output = Output {
+        greeting: format!("Hello, {}", input.name),
+    };
+    serde_json::to_value(output)
+}
+
