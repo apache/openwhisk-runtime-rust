@@ -25,4 +25,3 @@ pub fn main(args: Value) -> Result<Value, Error> {
     };
     serde_json::to_value(output)
 }
-

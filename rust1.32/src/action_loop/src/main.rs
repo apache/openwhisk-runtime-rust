@@ -29,12 +29,12 @@ fn main() {
                     env::set_var(format!("__OW_{}", key.to_uppercase()), val.to_string());
                 }
                 match actionMain(input.value) {
-                    Ok(action_result) => {
-                        match serde_json::to_string(&action_result){
-                            Ok(response) =>  writeln!(&mut fd3, "{}", response).expect("Error writing on fd3"),
-                            Err(_) => writeln!(&mut fd3, "error").expect("Error writing on fd3"),
-                        } 
-                    }
+                    Ok(action_result) => match serde_json::to_string(&action_result) {
+                        Ok(response) => {
+                            writeln!(&mut fd3, "{}", response).expect("Error writing on fd3")
+                        }
+                        Err(_) => writeln!(&mut fd3, "error").expect("Error writing on fd3"),
+                    },
                     Err(err) => {
                         eprintln!("Error formatting result value json: {}", err);
                     }
@@ -48,4 +48,3 @@ fn main() {
         stderr().flush().expect("Error flushing stderr");
     }
 }
-
