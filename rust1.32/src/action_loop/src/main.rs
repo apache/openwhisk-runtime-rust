@@ -6,7 +6,7 @@ use std::{
     collections::HashMap,
     env,
     fs::File,
-    io::{stderr, stdin, stdout, Write},
+    io::{stderr, stdin, stdout, BufRead, Write},
     os::unix::io::FromRawFd,
 };
 
@@ -19,9 +19,9 @@ struct Input {
 
 fn main() {
     let mut fd3 = unsafe { File::from_raw_fd(3) };
-    loop {
-        let mut buffer = String::new();
-        stdin().read_line(&mut buffer).unwrap();
+    let stdin = stdin();
+    for line in stdin.lock().lines() {
+        let buffer: String = line.expect("Error reading line");
         let parsed_input: Result<Input, Error> = serde_json::from_str(&buffer);
         match parsed_input {
             Ok(input) => {
