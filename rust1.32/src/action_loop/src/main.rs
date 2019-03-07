@@ -33,7 +33,7 @@ fn main() {
                         Ok(response) => {
                             writeln!(&mut fd3, "{}", response).expect("Error writing on fd3")
                         }
-                        Err(_) => writeln!(&mut fd3, r#"{"error":"Error parsing the action result"\n}"#).expect("Error writing on fd3"),
+                        Err(_) => writeln!(&mut fd3, "{{\"error\":\"Error parsing the action result\"\n}}").expect("Error writing on fd3"),
                     },
                     Err(err) => {
                         eprintln!("Error formatting result value json: {}", err);
