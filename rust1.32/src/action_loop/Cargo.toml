@@ -2,6 +2,7 @@
 name = "action_loop"
 version = "0.1.0"
 authors = ["Roberto Diaz <roberto@theagilemonkeys.com>"]
+edition = "2018"
 
 [dependencies]
 serde = "1.0"

@@ -1,18 +1,14 @@
-extern crate actions;
-extern crate libc;
-extern crate serde;
-extern crate serde_derive;
-extern crate serde_json;
-
 use actions::main as actionMain;
-use serde_derive::Deserialize;
 
+use serde_derive::Deserialize;
 use serde_json::{Error, Value};
-use std::collections::HashMap;
-use std::env;
-use std::fs::File;
-use std::io::{stderr, stdin, stdout, Write};
-use std::os::unix::io::FromRawFd;
+use std::{
+    collections::HashMap,
+    env,
+    fs::File,
+    io::{stderr, stdin, stdout, Write},
+    os::unix::io::FromRawFd,
+};
 
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 struct Input {
