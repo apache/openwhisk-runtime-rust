@@ -17,6 +17,11 @@ struct Input {
     environment: HashMap<String, Value>,
 }
 
+fn log_error(fd3: &mut File, error: Error) {
+    writeln!(fd3, "{{\"error\":\"{}\"}}\n", error).expect("Error writing on fd3");
+    eprintln!("error: {}", error);
+}
+
 fn main() {
     let mut fd3 = unsafe { File::from_raw_fd(3) };
     let stdin = stdin();
@@ -33,15 +38,15 @@ fn main() {
                         Ok(response) => {
                             writeln!(&mut fd3, "{}", response).expect("Error writing on fd3")
                         }
-                        Err(_) => writeln!(&mut fd3, "{{\"error\":\"Error parsing the action result\"\n}}").expect("Error writing on fd3"),
+                        Err(err) => log_error(&mut fd3, err),
                     },
                     Err(err) => {
-                        eprintln!("Error formatting result value json: {}", err);
+                        log_error(&mut fd3, err);
                     }
                 }
             }
             Err(err) => {
-                eprintln!("Error parsing input: {}", err);
+                log_error(&mut fd3, err);
             }
         }
         stdout().flush().expect("Error flushing stdout");
