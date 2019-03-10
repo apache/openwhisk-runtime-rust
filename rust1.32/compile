@@ -43,9 +43,13 @@ def copy_replace(src, dst, match=None, replacement=""):
 cargo_action = """[package]
 name = "actions"
 version = "0.1.0"
+authors = ["Roberto Diaz <roberto@theagilemonkeys.com>"]
+edition = "2018"
 
 [dependencies]
 serde_json = "1.0"
+serde = "1.0"
+serde_derive = "1.0"
 """
 
 def build(tgt_dir):
