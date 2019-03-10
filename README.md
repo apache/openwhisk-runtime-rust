@@ -3,7 +3,6 @@
 Work in Progress! Do not use yet...
 It will be awesome.
 
-# Apache OpenWhisk runtimes for Python
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 [![Build Status](https://travis-ci.org/apache/incubator-openwhisk-runtime-rust.svg?branch=master)](https://travis-ci.org/apache/incubator-openwhisk-runtime-rust)
 
