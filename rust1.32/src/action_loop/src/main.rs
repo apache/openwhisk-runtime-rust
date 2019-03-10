@@ -12,9 +12,14 @@ use std::{
 
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 struct Input {
-    value: HashMap<String, Value>,
+    value: Value,
     #[serde(flatten)]
     environment: HashMap<String, Value>,
+}
+
+fn log_error(fd3: &mut File, error: Error) {
+    writeln!(fd3, "{{\"error\":\"{}\"}}\n", error).expect("Error writing on fd3");
+    eprintln!("error: {}", error);
 }
 
 fn main() {
@@ -28,17 +33,20 @@ fn main() {
                 for (key, val) in input.environment {
                     env::set_var(format!("__OW_{}", key.to_uppercase()), val.to_string());
                 }
-                match serde_json::to_string(&actionMain(input.value)) {
-                    Ok(result) => {
-                        writeln!(&mut fd3, "{}", result).expect("Error writing on fd3");
-                    }
+                match actionMain(input.value) {
+                    Ok(action_result) => match serde_json::to_string(&action_result) {
+                        Ok(response) => {
+                            writeln!(&mut fd3, "{}", response).expect("Error writing on fd3")
+                        }
+                        Err(err) => log_error(&mut fd3, err),
+                    },
                     Err(err) => {
-                        eprintln!("Error formatting result value json: {}", err);
+                        log_error(&mut fd3, err);
                     }
                 }
             }
             Err(err) => {
-                eprintln!("Error parsing input: {}", err);
+                log_error(&mut fd3, err);
             }
         }
         stdout().flush().expect("Error flushing stdout");
