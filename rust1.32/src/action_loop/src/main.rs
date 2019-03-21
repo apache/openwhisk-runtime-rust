@@ -30,7 +30,12 @@ fn main() {
                             }
                         }
                     } else {
-                        env::set_var(format!("__OW_{}", key.to_uppercase()), val.to_string());
+                        if let Some(string_value) = val.as_str() {
+                            env::set_var(format!("__OW_{}", key.to_uppercase()), string_value);
+                        } else {
+                            env::set_var(format!("__OW_{}", key.to_uppercase()), val.to_string());
+                        };
+
                     }
                 }
             }
