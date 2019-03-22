@@ -1,48 +1,53 @@
-extern crate serde_json;
-extern crate actions;
-extern crate libc;
-
-use std::env;
-use std::io::{self, Write, stdout, stderr};
-use std::fs::File;
-use std::os::unix::io::FromRawFd;
-use std::collections::HashMap;
-use serde_json::{Value, Error};
 use actions::main as actionMain;
 
+use serde_derive::Deserialize;
+use serde_json::{Error, Value};
+use std::{
+    collections::HashMap,
+    env,
+    fs::File,
+    io::{stderr, stdin, stdout, BufRead, Write},
+    os::unix::io::FromRawFd,
+};
+
+#[derive(Debug, Clone, PartialEq, Deserialize)]
+struct Input {
+    value: Value,
+    #[serde(flatten)]
+    environment: HashMap<String, Value>,
+}
+
+fn log_error(fd3: &mut File, error: Error) {
+    writeln!(fd3, "{{\"error\":\"{}\"}}\n", error).expect("Error writing on fd3");
+    eprintln!("error: {}", error);
+}
+
 fn main() {
-    let mut fd3 = unsafe { File::from_raw_fd(3)};
-    loop {
-        let mut buffer = String::new();
-        io::stdin().read_line(&mut buffer).unwrap();
-        let parsed_input:Result<HashMap<String,Value>,Error> = serde_json::from_str(&buffer);
-        let mut payload:HashMap<String, Value> = HashMap::new();
+    let mut fd3 = unsafe { File::from_raw_fd(3) };
+    let stdin = stdin();
+    for line in stdin.lock().lines() {
+        let buffer: String = line.expect("Error reading line");
+        let parsed_input: Result<Input, Error> = serde_json::from_str(&buffer);
         match parsed_input {
-            Ok(n) => {
-                for (key, val) in n {
-                    if key == "value" {
-                        let mut unparsed_payload:Result<HashMap<String,Value>,Error> = serde_json::from_value(val);
-                        match unparsed_payload {
-                            Ok(value) => payload = value,
-                            Err(err) => {
-                                eprintln!("Error parsing value json: {}", err);
-                                continue
-                            }
+            Ok(input) => {
+                for (key, val) in input.environment {
+                    env::set_var(format!("__OW_{}", key.to_uppercase()), val.to_string());
+                }
+                match actionMain(input.value) {
+                    Ok(action_result) => match serde_json::to_string(&action_result) {
+                        Ok(response) => {
+                            writeln!(&mut fd3, "{}", response).expect("Error writing on fd3")
                         }
-                    } else {
-                        env::set_var(format!("__OW_{}", key.to_uppercase()), val.to_string());
+                        Err(err) => log_error(&mut fd3, err),
+                    },
+                    Err(err) => {
+                        log_error(&mut fd3, err);
                     }
                 }
             }
-            Err(e) =>{
-                eprintln!("Error: {}", e);
-                continue
+            Err(err) => {
+                log_error(&mut fd3, err);
             }
-        }
-        
-        match serde_json::to_string(&actionMain(payload)){
-            Ok(result) => { write!(&mut fd3, "{}\n", result).expect("Error writting on fd3");}
-            Err(err) => {  eprintln!("Error parsing resul value json: {}", err);}
         }
         stdout().flush().expect("Error flushing stdout");
         stderr().flush().expect("Error flushing stderr");

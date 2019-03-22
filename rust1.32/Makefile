@@ -7,8 +7,9 @@ build:
 	docker build -t $(USER)/$(IMAGE) .
 
 devel: build
-	docker run -ti -p 8080:8080 --entrypoint=bash  \
+	docker run -ti -p 8080:8080 --entrypoint=bash \
 	-v $(PWD):/mnt -e OW_COMPILER=/mnt/compile \
+	$(USER)/$(IMAGE)
 
 push: build
 	docker login
