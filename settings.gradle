@@ -16,7 +16,7 @@
  */
 
 include 'tests'
-include 'python3.7'
+include 'rust1.32'
 
 rootProject.name = 'runtime-actionlooop'
 

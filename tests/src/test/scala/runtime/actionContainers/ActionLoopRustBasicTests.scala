@@ -25,7 +25,7 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class ActionLoopRustBasicTests extends BasicActionRunnerTests with WskActorSystem {
 
-  val image = "actionloop-rust-v1.22"
+  val image = "actionloop-rust-v1.23"
 
   override def withActionContainer(env: Map[String, String] = Map.empty)(
     code: ActionContainer => Unit) = {
@@ -39,27 +39,7 @@ class ActionLoopRustBasicTests extends BasicActionRunnerTests with WskActorSyste
 
   override val testNoSourceOrExec = TestConfig("")
 
-
-  override val testNotReturningJson =
-    TestConfig("""|extern crate serde_json;
-                  |use serde_derive::{Deserialize, Serialize};
-                  |use serde_json::{Error, Value};
-                  |#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-                  |struct Input {
-                  |    #[serde(default = "stranger")]
-                  |    name: String,
-                  |}
-                  |#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-                  |struct Output {
-                  |    greeting: String,
-                  |}
-                  |fn stranger() -> String {
-                  |    "stranger".to_string()
-                  |}
-                  |pub fn main(_args: Value) -> Result<Value, Error> {
-                  |    serde_json::from_str("not valid json")
-                  |}
-                """.stripMargin)
+  override val testNotReturningJson = TestConfig("", skipTest = true)
 
   override val testEcho =
     TestConfig("""|extern crate serde_json;
@@ -86,7 +66,7 @@ class ActionLoopRustBasicTests extends BasicActionRunnerTests with WskActorSyste
                   |pub fn main(args: Value) -> Result<Value, Error> {
                   |    let input: Input = serde_json::from_value(args)?;
                   |    let output = Output {
-                  |        winter: format!("{}{}{}", input.delimiter,"\u{2603}",input.delimiter),
+                  |        winter: format!("{} {} {}", input.delimiter,"☃",input.delimiter),
                   |    };
                   |    serde_json::to_value(output)
                   |}
