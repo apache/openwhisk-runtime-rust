@@ -50,9 +50,10 @@ class ActionLoopRustBasicTests extends BasicActionRunnerTests with WskActorSyste
                   |    Ok(args)
                   |}
                 """.stripMargin)
-
+  val snowman = """\""" + """u{2603}"""
+  val space = """\"""+"""u{0020}"""
   override val testUnicode =
-    TestConfig("""|extern crate serde_json;
+    TestConfig(s"""|extern crate serde_json;
                   |use serde_derive::{Deserialize, Serialize};
                   |use serde_json::{Error, Value};
                   |#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -66,7 +67,7 @@ class ActionLoopRustBasicTests extends BasicActionRunnerTests with WskActorSyste
                   |pub fn main(args: Value) -> Result<Value, Error> {
                   |    let input: Input = serde_json::from_value(args)?;
                   |    let output = Output {
-                  |        winter: format!("{} {} {}", input.delimiter,"☃",input.delimiter),
+                   |        winter: format!("{} {} {}", input.delimiter,'☃',input.delimiter),
                   |    };
                   |    serde_json::to_value(output)
                   |}
