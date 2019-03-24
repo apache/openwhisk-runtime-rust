@@ -53,25 +53,28 @@ class ActionLoopRustBasicTests extends BasicActionRunnerTests with WskActorSyste
   val snowman = """\""" + """u{2603}"""
   val space = """\"""+"""u{0020}"""
   override val testUnicode =
-    TestConfig(s"""|extern crate serde_json;
-                  |use serde_derive::{Deserialize, Serialize};
-                  |use serde_json::{Error, Value};
-                  |#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-                  |struct Input {
-                  |    delimiter: String,
-                  |}
-                  |#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-                  |struct Output {
-                  |    winter: String,
-                  |}
-                  |pub fn main(args: Value) -> Result<Value, Error> {
-                  |    let input: Input = serde_json::from_value(args)?;
-                  |    let output = Output {
-                   |        winter: format!("{} {} {}", input.delimiter,'☃',input.delimiter),
-                  |    };
-                  |    serde_json::to_value(output)
-                  |}
-                """.stripMargin)
+    TestConfig(
+      raw"""|extern crate serde_json;
+            |use serde_derive::{Deserialize, Serialize};
+            |use serde_json::{Error, Value};
+            |#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+            |struct Input {
+            |    delimiter: String,
+            |}
+            |#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+            |struct Output {
+            |    winter: String,
+            |}
+            |pub fn main(args: Value) -> Result<Value, Error> {
+            |    let input: Input = serde_json::from_value(args)?;
+            |    let msg = format!("{} {} {}", input.delimiter,'☃',input.delimiter);
+            |    println!("{}", msg);
+            |    let output = Output {
+            |        winter: msg,
+            |   };
+            |   serde_json::to_value(output)
+            |}
+        """.stripMargin)
 
   override val testEnv =
     TestConfig("""|extern crate serde_json;

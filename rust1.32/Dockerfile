@@ -20,7 +20,8 @@ COPY --from=builder /bin/proxy /bin/proxy
 RUN mkdir -p /action 
 ADD compile /bin/compile
 ADD src /usr/src
-RUN cd /usr/src ; cargo build 
+RUN cd /usr/src ; cargo build
+ENV PYTHONIOENCODING=utf8
 ENV OW_COMPILER=/bin/compile
 WORKDIR /action
 ENTRYPOINT ["/bin/proxy"]
