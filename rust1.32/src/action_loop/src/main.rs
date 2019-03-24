@@ -31,7 +31,11 @@ fn main() {
         match parsed_input {
             Ok(input) => {
                 for (key, val) in input.environment {
-                    env::set_var(format!("__OW_{}", key.to_uppercase()), val.to_string());
+                   if let Some(string_value) = val.as_str() {
+                        env::set_var(format!("__OW_{}", key.to_uppercase()), string_value);
+                    } else {
+                        env::set_var(format!("__OW_{}", key.to_uppercase()), val.to_string());
+                    };
                 }
                 match actionMain(input.value) {
                     Ok(action_result) => match serde_json::to_string(&action_result) {

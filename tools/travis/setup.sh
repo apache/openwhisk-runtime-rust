@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -14,14 +15,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-FROM actionloop/actionloop-v2:latest as builder
-FROM rust:1.32
-COPY --from=builder /bin/proxy /bin/proxy
-RUN mkdir -p /action 
-ADD compile /bin/compile
-ADD src /usr/src
-RUN cd /usr/src ; cargo build
-ENV PYTHONIOENCODING=utf8
-ENV OW_COMPILER=/bin/compile
-WORKDIR /action
-ENTRYPOINT ["/bin/proxy"]
+
+set -e
+
+# Build script for Travis-CI.
+
+SCRIPTDIR=$(cd $(dirname "$0") && pwd)
+ROOTDIR="$SCRIPTDIR/../.."
+HOMEDIR="$SCRIPTDIR/../../../"
+
+# clone OpenWhisk utilities repo. in order to run scanCode
+cd $HOMEDIR
+git clone https://github.com/apache/incubator-openwhisk-utilities.git
+
+# clone main openwhisk repo. for testing purposes
+git clone --depth=1 https://github.com/apache/incubator-openwhisk.git openwhisk
+cd openwhisk
+./tools/travis/setup.sh
