@@ -1,4 +1,4 @@
-<!--
+#!/bin/bash
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -15,12 +15,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
--->
-# incubator-openwhisk-runtime-rust
 
-Work in Progress! Do not use yet...
-It will be awesome.
+set -ex
 
-[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Build Status](https://travis-ci.org/apache/incubator-openwhisk-runtime-rust.svg?branch=master)](https://travis-ci.org/apache/incubator-openwhisk-runtime-rust)
+# Build script for Travis-CI.
 
+SCRIPTDIR=$(cd $(dirname "$0") && pwd)
+ROOTDIR="$SCRIPTDIR/../.."
+UTILDIR="$ROOTDIR/../incubator-openwhisk-utilities"
+
+# run scancode using the ASF Release configuration
+pushd $UTILDIR
+scancode/scanCode.py --config $ROOTDIR/tools/scancode/ASF-Release.cfg $ROOTDIR
+popd
