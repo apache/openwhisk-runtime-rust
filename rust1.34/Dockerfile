@@ -14,10 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-FROM actionloop/actionloop-v2:latest as builder
-FROM rust:1.32
+FROM openwhisk/actionloop-v2:4376fee as builder
+FROM rust:1.34
 COPY --from=builder /bin/proxy /bin/proxy
-RUN mkdir -p /action 
+RUN mkdir -p /action
 ADD compile /bin/compile
 ADD src /usr/src
 RUN cd /usr/src ; cargo build

@@ -15,5 +15,5 @@
  * limitations under the License.
  */
 
-ext.dockerImageName = 'actionloop-rust-v1.23'
+ext.dockerImageName = 'actionloop-rust-v1.34'
 apply from: '../gradle/docker.gradle'

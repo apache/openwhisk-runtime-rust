@@ -3,24 +3,27 @@
 
 sudo: required
 services:
-  - docker
+- docker
 before_install:
-  - "./tools/travis/setup.sh"
+- "./tools/travis/setup.sh"
 install: true
 script:
-  - "./tools/travis/scan.sh && ./tools/travis/build.sh && ./tools/travis/test.sh"
-
+- "./tools/travis/scan.sh && ./tools/travis/build.sh && ./tools/travis/test.sh"
 deploy:
-  - provider: script
-    skip_cleanup: true
-    script: "./tools/travis/publish.sh openwhisk ${TRAVIS_TAG%@*} ${TRAVIS_TAG##*@}"
-    on:
-      tags: true
-      all_branches: true
-      repo: apache/incubator-openwhisk-runtime-rust
-  - provider: script
-    skip_cleanup: true
-    script: "./tools/travis/publish.sh openwhisk rust1.32 latest"
-    on:
-      branch: master
-      repo: apache/incubator-openwhisk-runtime-rust
+- provider: script
+  skip_cleanup: true
+  script: "./tools/travis/publish.sh openwhisk ${TRAVIS_TAG%@*} ${TRAVIS_TAG##*@}"
+  on:
+    tags: true
+    all_branches: true
+    repo: apache/incubator-openwhisk-runtime-rust
+- provider: script
+  skip_cleanup: true
+  script: "./tools/travis/publish.sh openwhisk rust1.34 latest"
+  on:
+    branch: master
+    repo: apache/incubator-openwhisk-runtime-rust
+env:
+  global:
+  - secure: 0Zk7istlUWhzCAMQvNSYEewgQmOF4uexJH/yh+35sifvX60tM2Hpq2ieZCgvTNgLhHPZmEJnRxldAgWGnwax4ROQyzJR+Qbu481KatwPEw5j+PpBP1rFUA5evYJC7gCG1INffliji0yd6WyoUMlwasMEyeyaqfRmdw3W4wMUXF/z1ya6cgAR9HxKegiOxtp4qjeFGk5PcyfxY5PoWroLeE3gpr5mjb7KoW6UzkkSlhJEsI9iMHyoUTln9ZTsLmBiGCmWC1cp6vaKq/K0t1p4bFm5Hg0vJMbb230jcdP9NyvLJJd9UX2eH0G/ER+QzkSM94OQwhQjTzPppC6YAluxUg5ZYr+Ik5ASHXc4WJXag4MRIrur24d60YI0iwodZe05c8ZA/Ksj41RscrbMBv3tIxDalJtY8DNfdfSL3qP3vZEFPyyAIs9jpUm36nY+VYlW0rP2AiEQNcv7rNNGCLqKVQnlbVR4ccCYbQovcjghzpkuL2A2zFqD4XScU2uj4bJF8HxB/LQCYrSXYUUh11+PE05idTH9X4+JE03Yal2qoX2Tn+a5HO3mkwSEjJ+M8QTuiB1kPLn7CnfPYJNsC28ZFP4HpfhpygWfAIFQmTQoqDGi6q4zi81LcYFeWnz+0wE+XqqoB6C4OwsTA6gM+bTR67mpibOPLSQ2paIRJdl+Gnk=
+  - secure: wwxICr/9NXNF1xTijUW2187d/EuHsjN6QhFW0wkF8hoJALl5MYvJ5FAfInPHchcZaiqt8p9fAgcnNaUiQ4jDmDomDVDQUzxw/Vkr3jOPleM/qeL7RJUHWXnBgKbEU2R89HWPSBCc2KUcyGihJcjPGs9banx41heiTDteXIq/P/+bmOjn3DW4wuazTum3fpZD3r/GE/1zhJN3WvGGJoei2BypSI41FXVdrl5kdkQGWU/XFPhV6ER6G8Y2OIPx/9iOpy8mvhKBDR5HKelDz5xTDUYn5c8V7/Mi5IyXWVzDPFovurlN3pf9Mkqyf0Pc5uGgy9UU+Lkq/PsA/jXaRKq3tJm5idD2VuAAGQpyPh0RHKdckX2xM551q1sWr4UVgFPBtCumguRi8jXBRQh4BkxJWm5UaHJh/i6eN634d/qUGJKw0sktWYFOkoY2mebkMMfFhu1a0dPzBB2D8uqRv/7oLDgx16RI4eGCmSIydBm27L+qQ11mS1chmORpoH/1MQM13zntIcZkBhRvZ63GgehABGGUHnYyGZAhhbsWXiW1Yipc+hZ4KJG+99KY5lZRbaCOKR+4u8xfsXr03JL+dELlQDDJkpWoY12Nyq6HdCovAFa8Y/hxut77UUQw71hOrg20AfzRX8tPI5ogb2m/LnTIxJ/nM13Lt02M2VEs+Oqm5hg=

@@ -16,7 +16,7 @@
  */
 
 include 'tests'
-include 'rust1.32'
+include 'rust1.34'
 
 rootProject.name = 'runtime-actionlooop'
 

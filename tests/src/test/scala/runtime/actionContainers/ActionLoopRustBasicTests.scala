@@ -25,7 +25,7 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class ActionLoopRustBasicTests extends BasicActionRunnerTests with WskActorSystem {
 
-  val image = "actionloop-rust-v1.23"
+  val image = "actionloop-rust-v1.34"
 
   override def withActionContainer(env: Map[String, String] = Map.empty)(code: ActionContainer => Unit) = {
     withContainer(image, env)(code)
