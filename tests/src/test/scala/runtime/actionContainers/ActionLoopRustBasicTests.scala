@@ -25,10 +25,9 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class ActionLoopRustBasicTests extends BasicActionRunnerTests with WskActorSystem {
 
-  val image = "actionloop-rust-v1.23"
+  val image = "actionloop-rust-v1.34"
 
-  override def withActionContainer(env: Map[String, String] = Map.empty)(
-    code: ActionContainer => Unit) = {
+  override def withActionContainer(env: Map[String, String] = Map.empty)(code: ActionContainer => Unit) = {
     withContainer(image, env)(code)
   }
 
@@ -51,10 +50,9 @@ class ActionLoopRustBasicTests extends BasicActionRunnerTests with WskActorSyste
                   |}
                 """.stripMargin)
   val snowman = """\""" + """u{2603}"""
-  val space = """\"""+"""u{0020}"""
+  val space = """\""" + """u{0020}"""
   override val testUnicode =
-    TestConfig(
-      raw"""|extern crate serde_json;
+    TestConfig(raw"""|extern crate serde_json;
             |use serde_derive::{Deserialize, Serialize};
             |use serde_json::{Error, Value};
             |#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -110,7 +108,6 @@ class ActionLoopRustBasicTests extends BasicActionRunnerTests with WskActorSyste
                   |}
                 """.stripMargin)
 
-
   override val testInitCannotBeCalledMoreThanOnce =
     TestConfig("""|extern crate serde_json;
                   |use serde_json::{Error, Value};
@@ -120,12 +117,14 @@ class ActionLoopRustBasicTests extends BasicActionRunnerTests with WskActorSyste
                 """.stripMargin)
 
   override val testEntryPointOtherThanMain =
-    TestConfig("""|extern crate serde_json;
+    TestConfig(
+      """|extern crate serde_json;
                   |use serde_json::{Error, Value};
                   |pub fn naim(args: Value) -> Result<Value, Error> {
                   |    Ok(args)
                   |}
-                """.stripMargin, main="naim")
+                """.stripMargin,
+      main = "naim")
 
   override val testLargeInput =
     TestConfig("""|extern crate serde_json;

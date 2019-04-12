@@ -26,6 +26,14 @@ node_modules
 # Vagrant
 .vagrant*
 
+# Eclipse
+tests/bin/
+**/.project
+.settings/
+.classpath
+.cache-main
+.cache-tests
+
 # IntelliJ
 .idea
 *.class

@@ -1,4 +1,3 @@
-<!--
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -15,12 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
--->
-# incubator-openwhisk-runtime-rust
-
-Work in Progress! Do not use yet...
-It will be awesome.
-
-[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Build Status](https://travis-ci.org/apache/incubator-openwhisk-runtime-rust.svg?branch=master)](https://travis-ci.org/apache/incubator-openwhisk-runtime-rust)
-
+FROM openwhisk/actionloop-v2:4376fee as builder
+FROM rust:1.34
+COPY --from=builder /bin/proxy /bin/proxy
+RUN mkdir -p /action
+ADD compile /bin/compile
+ADD src /usr/src
+RUN cd /usr/src ; cargo build
+ENV PYTHONIOENCODING=utf8
+ENV OW_COMPILER=/bin/compile
+WORKDIR /action
+ENTRYPOINT ["/bin/proxy"]

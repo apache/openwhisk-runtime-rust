@@ -20,25 +20,9 @@ set -eux
 
 # Build script for Travis-CI.
 
-SCRIPTDIR=$(cd $(dirname "$0") && pwd)
-ROOTDIR="$SCRIPTDIR/../.."
-WHISKDIR="$ROOTDIR/../openwhisk"
-
-export OPENWHISK_HOME=$WHISKDIR
-
 IMAGE_PREFIX=$1
-RUNTIME_VERSION=$2
+RUNTIME=$2
 IMAGE_TAG=$3
-
-if [ ${RUNTIME_VERSION} == "2" ]; then
-  RUNTIME="python2Action"
-elif [ ${RUNTIME_VERSION} == "3" ]; then
-  RUNTIME="pythonAction"
-elif [ ${RUNTIME_VERSION} == "3-ai" ]; then
-  RUNTIME="python3AiAction"
-elif [ ${RUNTIME_VERSION} == "3-loop" ]; then
-  RUNTIME="pythonActionLoop"
-fi
 
 if [[ ! -z ${DOCKER_USER} ]] && [[ ! -z ${DOCKER_PASSWORD} ]]; then
 docker login -u "${DOCKER_USER}" -p "${DOCKER_PASSWORD}"
@@ -46,7 +30,7 @@ fi
 
 if [[ ! -z ${RUNTIME} ]]; then
 TERM=dumb ./gradlew \
-:core:${RUNTIME}:distDocker \
+:${RUNTIME}:distDocker \
 -PdockerRegistry=docker.io \
 -PdockerImagePrefix=${IMAGE_PREFIX} \
 -PdockerImageTag=${IMAGE_TAG}
@@ -55,7 +39,7 @@ TERM=dumb ./gradlew \
   if [ ${IMAGE_TAG} == "latest" ]; then
   SHORT_COMMIT=`git rev-parse --short HEAD`
   TERM=dumb ./gradlew \
-  :core:${RUNTIME}:distDocker \
+  :${RUNTIME}:distDocker \
   -PdockerRegistry=docker.io \
   -PdockerImagePrefix=${IMAGE_PREFIX} \
   -PdockerImageTag=${SHORT_COMMIT}
