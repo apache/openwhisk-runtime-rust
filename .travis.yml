@@ -25,7 +25,7 @@ deploy:
     repo: apache/incubator-openwhisk-runtime-rust
 - provider: script
   skip_cleanup: true
-  script: "./tools/travis/publish.sh openwhisk rust1.34 latest"
+  script: "./tools/travis/publish.sh openwhisk rust1.34 nightly"
   on:
     branch: master
     repo: apache/incubator-openwhisk-runtime-rust
