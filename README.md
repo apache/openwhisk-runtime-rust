@@ -16,10 +16,10 @@
 # limitations under the License.
 #
 -->
-# incubator-openwhisk-runtime-rust
+# openwhisk-runtime-rust
 
 Work in Progress... It will be awesome!
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Build Status](https://travis-ci.org/apache/incubator-openwhisk-runtime-rust.svg?branch=master)](https://travis-ci.org/apache/incubator-openwhisk-runtime-rust)
+[![Build Status](https://travis-ci.org/apache/openwhisk-runtime-rust.svg?branch=master)](https://travis-ci.org/apache/openwhisk-runtime-rust)
 
