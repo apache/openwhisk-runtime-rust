@@ -36,13 +36,13 @@ deploy:
   on:
     tags: true
     all_branches: true
-    repo: apache/incubator-openwhisk-runtime-rust
+    repo: apache/openwhisk-runtime-rust
 - provider: script
   skip_cleanup: true
   script: "./tools/travis/publish.sh openwhisk rust1.34 nightly"
   on:
     branch: master
-    repo: apache/incubator-openwhisk-runtime-rust
+    repo: apache/openwhisk-runtime-rust
 env:
   global:
   - secure: 0Zk7istlUWhzCAMQvNSYEewgQmOF4uexJH/yh+35sifvX60tM2Hpq2ieZCgvTNgLhHPZmEJnRxldAgWGnwax4ROQyzJR+Qbu481KatwPEw5j+PpBP1rFUA5evYJC7gCG1INffliji0yd6WyoUMlwasMEyeyaqfRmdw3W4wMUXF/z1ya6cgAR9HxKegiOxtp4qjeFGk5PcyfxY5PoWroLeE3gpr5mjb7KoW6UzkkSlhJEsI9iMHyoUTln9ZTsLmBiGCmWC1cp6vaKq/K0t1p4bFm5Hg0vJMbb230jcdP9NyvLJJd9UX2eH0G/ER+QzkSM94OQwhQjTzPppC6YAluxUg5ZYr+Ik5ASHXc4WJXag4MRIrur24d60YI0iwodZe05c8ZA/Ksj41RscrbMBv3tIxDalJtY8DNfdfSL3qP3vZEFPyyAIs9jpUm36nY+VYlW0rP2AiEQNcv7rNNGCLqKVQnlbVR4ccCYbQovcjghzpkuL2A2zFqD4XScU2uj4bJF8HxB/LQCYrSXYUUh11+PE05idTH9X4+JE03Yal2qoX2Tn+a5HO3mkwSEjJ+M8QTuiB1kPLn7CnfPYJNsC28ZFP4HpfhpygWfAIFQmTQoqDGi6q4zi81LcYFeWnz+0wE+XqqoB6C4OwsTA6gM+bTR67mpibOPLSQ2paIRJdl+Gnk=
