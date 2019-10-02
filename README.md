@@ -22,7 +22,7 @@
 [![Build Status](https://travis-ci.org/apache/openwhisk-runtime-rust.svg?branch=master)](https://travis-ci.org/apache/openwhisk-runtime-rust)
 
 ### Give it a try today
-To use as a docker action
+To use as a Docker action:
 
 ```
 wsk action update myAction my_action.rs --docker openwhisk/actionloop-rust-v1.34
@@ -60,11 +60,11 @@ pub fn main(args: Value) -> Result<Value, Error> {
 }
 ```
 
-The action is mainly composed by a `main` function that accepts a json serde Value as input and returns a Result including a json serde Value.
+The action is mainly composed by a `main` function that accepts a JSON `serdes Value` as input and returns a `Result` including a JSON `serde Value`.
 
 ### Managing dependencies
 
-if your action needs external dependencies, you need to provide a zip file including your source and your cargo file with all your dependencies. The folder structure is the following:
+If your action needs external dependencies, you need to provide a zip file including your source and your cargo file with all your dependencies. The folder structure is the following:
 ```
 |- Cargo.toml
 |- src
