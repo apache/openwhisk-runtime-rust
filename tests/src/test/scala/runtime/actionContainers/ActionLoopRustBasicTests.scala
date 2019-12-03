@@ -89,7 +89,9 @@ class ActionLoopRustBasicTests extends BasicActionRunnerTests with WskActorSyste
                   |    #[serde(skip_serializing_if = "Option::is_none")]
                   |    namespace: Option<String>,
                   |    #[serde(skip_serializing_if = "Option::is_none")]
-                  |   action_name: Option<String>,
+                  |    action_name: Option<String>,
+                  |    #[serde(skip_serializing_if = "Option::is_none")]
+                  |    action_version: Option<String>,
                   |    #[serde(skip_serializing_if = "Option::is_none")]
                   |    activation_id: Option<String>,
                   |    #[serde(skip_serializing_if = "Option::is_none")]
@@ -101,6 +103,7 @@ class ActionLoopRustBasicTests extends BasicActionRunnerTests with WskActorSyste
                   |        api_key: env::var("__OW_API_KEY").ok(),
                   |        namespace: env::var("__OW_NAMESPACE").ok(),
                   |        action_name: env::var("__OW_ACTION_NAME").ok(),
+                  |        action_version: env::var("__OW_ACTION_VERSION").ok(),
                   |        activation_id: env::var("__OW_ACTIVATION_ID").ok(),
                   |        deadline: env::var("__OW_DEADLINE").ok(),
                   |    };
