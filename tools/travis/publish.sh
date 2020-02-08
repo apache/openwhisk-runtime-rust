@@ -30,7 +30,7 @@ fi
 
 if [[ ! -z ${RUNTIME} ]]; then
 TERM=dumb ./gradlew \
-:${RUNTIME}:distDocker \
+core:${RUNTIME}:distDocker \
 -PdockerRegistry=docker.io \
 -PdockerImagePrefix=${IMAGE_PREFIX} \
 -PdockerImageTag=${IMAGE_TAG}
@@ -39,7 +39,7 @@ TERM=dumb ./gradlew \
   if [ ${IMAGE_TAG} == "nightly" ]; then
   SHORT_COMMIT=`git rev-parse --short HEAD`
   TERM=dumb ./gradlew \
-  :${RUNTIME}:distDocker \
+  core:${RUNTIME}:distDocker \
   -PdockerRegistry=docker.io \
   -PdockerImagePrefix=${IMAGE_PREFIX} \
   -PdockerImageTag=${SHORT_COMMIT}
