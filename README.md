@@ -25,7 +25,7 @@
 To use as a Docker action:
 
 ```
-wsk action update myAction my_action.rs --docker openwhisk/actionloop-rust-v1.34
+wsk action update myAction my_action.rs --docker openwhisk/action-rust-v1.34
 ```
 
 The file `my_action.rs` looks like:
@@ -85,5 +85,5 @@ serde_derive = "1.0"
 ```
 Once you have all your code zipped in a file with the showed folder structure you can generate your action with the following command:
 ```
-wsk action create yourAction /full_path_to/yourCode.zip --docker openwhisk/actionloop-rust-v1.34
+wsk action create yourAction /full_path_to/yourCode.zip --docker openwhisk/action-rust-v1.34
 ```

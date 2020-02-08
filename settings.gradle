@@ -16,9 +16,9 @@
  */
 
 include 'tests'
-include 'rust1.34'
+include 'core:rust1.34'
 
-rootProject.name = 'runtime-actionlooop'
+rootProject.name = 'runtime-rust'
 
 gradle.ext.openwhisk = [
         version: '1.0.0-SNAPSHOT'
