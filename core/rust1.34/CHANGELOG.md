@@ -1,3 +1,4 @@
+<!--
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
@@ -14,20 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+-->
 
-USER=docker.io/openwhisk
-IMAGE=action-rust-v1.34
+# Rust  OpenWhisk Runtime Container
 
-.PHONY: build
-
-build:
-	docker build -t $(USER)/$(IMAGE) .
-
-devel: build
-	docker run -ti -p 8080:8080 --entrypoint=bash \
-	-v $(PWD):/mnt -e OW_COMPILER=/mnt/compile.py \
-	$(USER)/$(IMAGE)
-
-push: build
-	docker login
-	docker push $(USER)/$(IMAGE)
+## 1.0.0
+  - Initial release
