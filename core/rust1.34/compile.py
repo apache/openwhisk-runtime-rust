@@ -24,7 +24,7 @@ from os.path import abspath, exists, dirname
 import time
 import shutil
 
-## utils 
+## utils
 # write a file creating intermediate directories
 def write_file(file, body):
     os.makedirs(dirname(file), mode=0o755, exist_ok=True)
@@ -76,7 +76,7 @@ def build(tgt_dir):
         sys.stdout.write(e)
      else:
        shutil.move(
-             "/usr/src/target/%s/action_loop" % bin_dir, 
+             "/usr/src/target/%s/action_loop" % bin_dir,
              "%s/exec" % tgt_dir)
 
 def sources(main, src_dir):
@@ -90,7 +90,7 @@ def sources(main, src_dir):
     if exists(src_file):
         os.makedirs("/usr/src/actions/src", mode=0o755, exist_ok=True)
         copy_replace(src_file, "/usr/src/actions/src/lib.rs")
-    
+
     # add a cargo.toml if needed
     cargo_action_file = "/usr/src/actions/Cargo.toml"
     if not exists(cargo_action_file):
