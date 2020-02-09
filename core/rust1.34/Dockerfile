@@ -38,10 +38,10 @@ COPY --from=builder_release /bin/proxy /bin/proxy_release
 RUN mv /bin/proxy_${GO_PROXY_BUILD_FROM} /bin/proxy
 
 RUN mkdir -p /action
-ADD compile /bin/compile
+ADD compile.py /bin/compile.py
 ADD src /usr/src
 RUN cd /usr/src ; cargo build
 ENV PYTHONIOENCODING=utf8
-ENV OW_COMPILER=/bin/compile
+ENV OW_COMPILER=/bin/compile.py
 WORKDIR /action
 ENTRYPOINT ["/bin/proxy"]
