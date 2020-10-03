@@ -19,5 +19,9 @@
 
 # Rust  OpenWhisk Runtime Container
 
+## 1.1.0
+  - Move from golang:1.12 to golang:1.15 to build the runtime proxy.
+  - Build proxy from openwhisk-runtime-go 1.16.0 release
+
 ## 1.0.0
   - Initial release
