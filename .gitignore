@@ -13,7 +13,6 @@ build/
 
 # Gradle
 .gradle
-build/
 !/tools/build/
 
 # Python
@@ -38,7 +37,6 @@ tests/bin/
 .idea
 *.class
 *.iml
-out/
 
 # .zip files must be explicited whitelisted
 *.zip
