@@ -64,7 +64,7 @@ The action is mainly composed by a `main` function that accepts a JSON `serdes V
 
 ### Managing dependencies
 
-If your action needs external dependencies, you need to provide a zip file including your source and your cargo file with all your dependencies. The folder structure is the following:
+If your action needs external dependencies, you need to provide a zip file including your source, and your cargo file with all your dependencies. The folder structure is the following:
 ```
 |- Cargo.toml
 |- src
