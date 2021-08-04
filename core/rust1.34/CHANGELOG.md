@@ -19,6 +19,10 @@
 
 # Rust  OpenWhisk Runtime Container
 
+## 1.3.0
+  - Build actionloop from 1.16@1.18.0 (#33)
+  - Update Akka versions (#33)
+
 ## 1.2.0
   - Build proxy from openwhisk-runtime-go 1.17.0 release
 
