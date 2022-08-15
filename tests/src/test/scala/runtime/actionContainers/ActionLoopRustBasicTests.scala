@@ -21,6 +21,7 @@ import actionContainers.{ActionContainer, BasicActionRunnerTests}
 import common.WskActorSystem
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
+import spray.json.{JsArray, JsObject, JsString}
 
 @RunWith(classOf[JUnitRunner])
 class ActionLoopRustBasicTests extends BasicActionRunnerTests with WskActorSystem {
@@ -136,4 +137,58 @@ class ActionLoopRustBasicTests extends BasicActionRunnerTests with WskActorSyste
                   |    Ok(args)
                   |}
                 """.stripMargin)
+
+  it should "support return array result" in {
+    val (out, err) = withActionLoopContainer { c =>
+      val code = """
+                   |extern crate serde_json;
+                   |
+                   |use serde_derive::{Deserialize, Serialize};
+                   |use serde_json::{Error, Value};
+                   |
+                   |
+                   |pub fn main(args: Value) -> Result<Value, Error> {
+                   |    let output = ["a", "b"];
+                   |    serde_json::to_value(output)
+                   |}
+                 """.stripMargin
+
+      val (initCode, _) = c.init(initPayload(code))
+
+      initCode should be(200)
+
+      val (runCode, runRes) = c.runForJsArray(runPayload(JsObject()))
+      runCode should be(200)
+      runRes shouldBe Some(JsArray(JsString("a"), JsString("b")))
+    }
+  }
+
+  it should "support array as input param" in {
+    val (out, err) = withActionLoopContainer { c =>
+      val code = """
+                   |extern crate serde_json;
+                   |
+                   |use serde_derive::{Deserialize, Serialize};
+                   |use serde_json::{Error, Value};
+                   |
+                   |
+                   |pub fn main(args: Value) -> Result<Value, Error> {
+                   |    let inputParam = args.as_array();
+                   |    let defaultOutput = ["c", "d"];
+                   |    match inputParam {
+                   |        None => serde_json::to_value(defaultOutput),
+                   |        Some(x) => serde_json::to_value(x),
+                   |    }
+                   |}
+                 """.stripMargin
+
+      val (initCode, _) = c.init(initPayload(code))
+
+      initCode should be(200)
+
+      val (runCode, runRes) = c.runForJsArray(runPayload(JsArray(JsString("a"), JsString("b"))))
+      runCode should be(200)
+      runRes shouldBe Some(JsArray(JsString("a"), JsString("b")))
+    }
+  }
 }
