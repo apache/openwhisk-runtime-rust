@@ -21,7 +21,7 @@ include 'core:rust1.34'
 rootProject.name = 'runtime-rust'
 
 gradle.ext.openwhisk = [
-        version: '1.0.0-SNAPSHOT'
+        version: '1.0.1-SNAPSHOT'
 ]
 
 gradle.ext.scala = [
