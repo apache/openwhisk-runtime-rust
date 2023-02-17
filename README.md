@@ -19,7 +19,7 @@
 # Apache OpenWhisk Runtime for Rust
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Build Status](https://travis-ci.com/apache/openwhisk-runtime-rust.svg?branch=master)](https://travis-ci.com/github/apache/openwhisk-runtime-rust)
+[![Continuous Integration](https://github.com/apache/openwhisk-runtime-rust/actions/workflows/ci.yaml/badge.svg)](https://github.com/apache/openwhisk-runtime-rust/actions/workflows/ci.yaml)
 
 ### Give it a try today
 To use as a Docker action:
